@@ -5,17 +5,34 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { TodoItem } from '../../api';
 import todoStore from '@/app/store/todoStore';
-import Practice from '../practice/page';
 
 const Todo: React.FC = observer(() => {
     const [value, setValue] = useState<string>('');
-    const [values , setValues] = useState<string>('');
     const [editValue, setEditValue] = useState<string>('');
     const [editIndex, setEditIndex] = useState<number | null>(null);
+    const[dateTime, setDateTime] = useState('');
 
     useEffect(() => {
-        todoStore.loadTodos();
+        const fetchData = async () => {
+            try {
+                await todoStore.loadTodos();
+                console.log('Todos:', todoStore.todos);
+            } catch (error) {
+                console.error('Error fetching todos:', error);
+            }
+        };
+        fetchData();
     }, []);
+
+    useEffect(()=> {
+       const interval = setInterval(() => {
+            const date = new Date();
+            const foratedDate = date.toLocaleDateString();
+            const formatedTime  = date.toLocaleTimeString();
+            setDateTime(`${foratedDate} - ${formatedTime}`);
+        }, 1000);
+        return () => clearInterval(interval);
+    })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -40,10 +57,10 @@ const Todo: React.FC = observer(() => {
     };
 
     return (
-        <div className='m-0'>
-            |<Practice />
+        <div className='m-5'>
+            <div className='mb-3'> {dateTime} </div>
             <form onSubmit={handleSubmit}>
-                <InputText type="text" className='p-2' placeholder="Enter Todo List" value={value} onChange={(e) => setValue(e.target.value)} />
+                <InputText  type="text"  className='p-2'  placeholder="Enter Todo List"  value={value}  onChange={(e) => setValue(e.target.value)}  />
                 <Button className='p-2 ml-2' label='Add Todo' type="submit" />
             </form>
             <div className=''>
@@ -51,15 +68,15 @@ const Todo: React.FC = observer(() => {
                     <div key={todo.id} className='p-2 mt-3'>
                         {editIndex === index ? (
                             <div className='mt-3 mb-3'>
-                                <InputText type="text" className='p-2' value={editValue} onChange={(e) => setEditValue(e.target.value)} />
-                                <Button label='Save'className='p-2 ml-2'  onClick={() => handleUpdate(todo.id)} />
+                                <InputText  type="text"  className='p-2'   value={editValue}   onChange={(e) => setEditValue(e.target.value)}  onKeyDown={(e) => e.key === 'Enter' && handleUpdate(todo.id)} />
+                                <Button label='Save' className='p-2 ml-2'  onClick={() => handleUpdate(todo.id)}  />
                             </div>
                         ) : (
                             <>
                                 <span>{todo.value}</span>
                                 <div className='mt-2'>
-                                    <Button label='Edit' className='mr-2 px-2 py-1' onClick={() => { setEditIndex(index); setEditValue(todo.value); }} />
-                                    <Button label='Delete' className='mr-2 px-2 py-1' onClick={() => handleDelete(todo.id)} />
+                                    <Button   label='Edit'   className='mr-2 px-2 py-1' onClick={() => {  setEditIndex(index);  setEditValue(todo.value);  }}  />
+                                    <Button  label='Delete'  className='mr-2 px-2 py-1' onClick={() => handleDelete(todo.id)} />
                                 </div>
                             </>
                         )}
@@ -69,6 +86,5 @@ const Todo: React.FC = observer(() => {
         </div>
     );
 });
-
 
 export default Todo;

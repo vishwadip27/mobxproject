@@ -1,22 +1,22 @@
-import { makeAutoObservable } from "mobx";
+// import { makeAutoObservable } from "mobx";
 
-class WishListStore{
-    wishListProducts: any[] = [];
+// class WishListStore{
+//     wishListProducts: any[] = [];
 
-    constructor(){
-        makeAutoObservable(this);
-    }
+//     constructor(){
+//         makeAutoObservable(this);
+//     }
 
-    addToWishlist(product: any){
-        if(!this.wishListProducts.find((item) => item.id === product.id)){
-            this.wishListProducts.push(product);
-        }
-    }
+//     addToWishlist(product: any){
+//         if(!this.wishListProducts.find((item) => item.id === product.id)){
+//             this.wishListProducts.push(product);
+//         }
+//     }
 
-    removeFromWishlist(productId: number){
-        this.wishListProducts = this.wishListProducts.filter((item) => item.id !== productId);
-    }
-}
+//     removeFromWishlist(productId: number){
+//         this.wishListProducts = this.wishListProducts.filter((item) => item.id !== productId);
+//     }
+// }
 
-const wishListStore = new WishListStore();
-export default wishListStore;
+// const wishListStore = new WishListStore();
+// export default wishListStore;

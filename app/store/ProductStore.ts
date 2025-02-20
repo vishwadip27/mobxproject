@@ -1,32 +1,32 @@
-import { makeAutoObservable } from "mobx";
-import { fetchTodos } from "../api";
+// import { makeAutoObservable } from "mobx";
+// import { fetchTodos } from "../api";
 
-class ProductStore {
-    products: any[] = [];
-    filterData: any[] = [];
-    loading: false | undefined;
-    error: string | null = null;
+// class ProductStore {
+//     products: any[] = [];
+//     filterData: any[] = [];
+//     loading: false | undefined;
+//     error: string | null = null;
 
-    constructor(){
-        makeAutoObservable(this);
-    }
+//     constructor(){
+//         makeAutoObservable(this);
+//     }
 
-    async fetchProducts() {
-        // this.loading = true;
-        try{
-            const data = await fetchTodos()
-        }catch(error){
-            this.error= "Error Fectching Products"
-        }finally{
-            this.loading = false;
-        }
-    }
+//     async fetchProducts() {
+//         // this.loading = true;
+//         try{
+//             const data = await fetchTodos()
+//         }catch(error){
+//             this.error= "Error Fectching Products"
+//         }finally{
+//             this.loading = false;
+//         }
+//     }
 
-    setFilteredProducts(filteredProducts: any[]) {
-        this.filterData = filteredProducts;
-    }
-}
+//     setFilteredProducts(filteredProducts: any[]) {
+//         this.filterData = filteredProducts;
+//     }
+// }
 
-const productStore = new ProductStore();
+// const productStore = new ProductStore();
 
-export default productStore;
+// export default productStore;
